@@ -33,13 +33,15 @@ cities_to_compare = ["Paris", "Londres", "Nice", "Bamako"]
 def mock_get_current_weather(city, api_key):
 
     """Fonction simulée pour get_current_weather"""
-    return {"current": {"temp_c": city_data[city]["temperature"], "condition": {"text": city_data[city]["conditions"]}}}
+    return {"current": {"temp_c": city_data[city]["temperature"],
+                        "condition": {"text": city_data[city]["conditions"]}}}
 
 
 @pytest.fixture
 def patch_get_current_weather():
     """Fixture pour remplacer get_current_weather par la fonction simulée"""
-    with patch("app.api.v1.comparateur.get_current_weather", mock_get_current_weather):
+    with patch("app.api.v1.comparateur.get_current_weather",
+               mock_get_current_weather):
         yield
 
 

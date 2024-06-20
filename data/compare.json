@@ -1,26 +1,18 @@
 {
     "Paris": {
-        "temperature": 18.0,
-        "conditions": "Cloudy"
+        "temperature": 22.5,
+        "conditions": "Ciel nuageux"
     },
-    "London": {
-        "temperature": 22.2,
-        "conditions": "Sunny"
+    "Londres": {
+        "temperature": 18.2,
+        "conditions": "Pluie l\u00e9g\u00e8re"
     },
-    "nice": {
-        "temperature": 27.3,
-        "conditions": "Partly Cloudy"
+    "Nice": {
+        "temperature": 25.8,
+        "conditions": "Ensoleill\u00e9"
     },
-    "bamako": {
-        "temperature": 34.1,
-        "conditions": "Sunny"
-    },
-    "melbourn": {
-        "temperature": 7.7,
-        "conditions": "Partly Cloudy"
-    },
-    "jeddah": {
-        "temperature": 34.0,
-        "conditions": "Sunny"
+    "Bamako": {
+        "temperature": 32.1,
+        "conditions": "Chaud et sec"
     }
 }
