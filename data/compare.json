@@ -1,0 +1,26 @@
+{
+    "Paris": {
+        "temperature": 18.0,
+        "conditions": "Cloudy"
+    },
+    "London": {
+        "temperature": 22.2,
+        "conditions": "Sunny"
+    },
+    "nice": {
+        "temperature": 27.3,
+        "conditions": "Partly Cloudy"
+    },
+    "bamako": {
+        "temperature": 34.1,
+        "conditions": "Sunny"
+    },
+    "melbourn": {
+        "temperature": 7.7,
+        "conditions": "Partly Cloudy"
+    },
+    "jeddah": {
+        "temperature": 34.0,
+        "conditions": "Sunny"
+    }
+}
