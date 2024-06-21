@@ -1,7 +1,12 @@
 import requests
 import json
 import os
+from dotenv import load_dotenv
 
+load_dotenv()
+
+# Récupérer la clé API depuis les variables d'environnement
+api_key = os.getenv('api_key')
 
 def sauvegarder_heures_soleil(data, nom_fichier):
     """
@@ -12,7 +17,7 @@ def sauvegarder_heures_soleil(data, nom_fichier):
         data (dict): Les données à sauvegarder.
         nom_fichier (str): Le nom du fichier JSON de sortie.
     """
-# Chemin du fichier dans le dossier "dataa"
+# Chemin du fichier dans le dossier "data"
     chemin = os.path.join("data", nom_fichier)
     with open(chemin, "w") as json_file:
         json.dump(data, json_file, indent=4)
