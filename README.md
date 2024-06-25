@@ -43,8 +43,7 @@ source env/bin/activate
 
 ##### 4- Installez les dépendances :
 
-- pip install pipreqs
-- pipreqs ./
+- pip install -r requirement.txt
 
 
 ## Utilisation
