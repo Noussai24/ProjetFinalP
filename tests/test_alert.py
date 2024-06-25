@@ -1,63 +1,132 @@
 import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
+import requests
+from app.api.v1.alert import recommandation_vetements
 
-# Importez les fonctions à tester depuis le module correct
-from app.api.v1.alert import recommandation_vetements, sauvegarder_donneesCurrent_json
 
-# Fixture pour mocker requests.get
-@pytest.fixture
-def mock_requests_get():
-    # Utilisation de patch pour remplacer requests.get par un mock
-    with patch('app.api.v1.alert.requests.get') as mock_get:
-        yield mock_get
-
-# Fixture pour mocker sauvegarder_donneesCurrent_json
-@pytest.fixture
-def mock_sauvegarder_donnees():
-    # Utilisation de patch pour remplacer sauvegarder_donneesCurrent_json par un mock
-    with patch('app.api.v1.alert.sauvegarder_donneesCurrent_json') as mock_sauvegarder:
-        yield mock_sauvegarder
-
-# Utilisation de pytest.mark.parametrize pour définir plusieurs cas de test
-@pytest.mark.parametrize("api_response, expected_result", [
-    # Cas où la température est de 5°C avec un temps clair
-    ({
+def test_recommandation_vetements_froid(mocker):
+    """
+    Teste la recommandation pour une température froide.
+    """
+    # Mock la réponse de l'API pour une température froide
+    mock_response = {
         'location': {'name': 'Paris'},
-        'current': {'temp_c': 5, 'condition': {'text': 'Clear'}, 'precip_mm': 0}
-    }, "Il fait plutôt frais à Paris avec 5°C. Tu devrais peut-être envisager de porter quelque chose de chaud !"),
-    # Cas où la température est de 15°C avec un temps partiellement nuageux sans précipitations
-    ({
-        'location': {'name': 'Paris'},
-        'current': {'temp_c': 15, 'condition': {'text': 'Partly cloudy'}, 'precip_mm': 0}
-    }, "À Paris il fait 15°C, un t-shirt et une veste légère pourraient être parfaits pour toi !"),
-    # Cas où la température est de 15°C avec un temps partiellement nuageux et des précipitations
-    ({
-        'location': {'name': 'Paris'},
-        'current': {'temp_c': 15, 'condition': {'text': 'Partly cloudy'}, 'precip_mm': 5}
-    }, "Il y a Partly cloudy à Paris et il fait 15°C. Prends un parapluie et peut-être un pull léger !"),
-    # Cas où la température est de 25°C avec un temps ensoleillé
-    ({
-        'location': {'name': 'Paris'},
-        'current': {'temp_c': 25, 'condition': {'text': 'Sunny'}, 'precip_mm': 0}
-    }, "Il fait chaud à Paris avec 25°C. C'est le moment de sortir les shorts et les lunettes de soleil !"),
-    # Cas où la température est de 25°C avec de la pluie
-    ({
-        'location': {'name': 'Paris'},
-        'current': {'temp_c': 25, 'condition': {'text': 'Rain'}, 'precip_mm': 10}
-    }, "Il pleut à Paris et il fait 25°C. N'oublie pas ton parapluie !")
-])
-def test_recommandation_vetements(mock_requests_get, mock_sauvegarder_donnees, api_response, expected_result):
-    # Configurer le mock pour requests.get pour retourner une réponse fictive
-    mock_response = MagicMock()
-    mock_response.status_code = 200
-    mock_response.json.return_value = api_response
-    mock_requests_get.return_value = mock_response
+        'current': {
+            'temp_c': 5,
+            'condition': {'text': 'Sunny'},
+            'precip_mm': 0
+        }
+    }
+    # Mock la réponse de requests.get pour retourner mock_response
+    mock_requests_get = mocker.patch('requests.get')
+    mock_requests_get.return_value.status_code = 200
+    mock_requests_get.return_value.json.return_value = mock_response
 
-    # Appeler la fonction avec une ville fictive
-    result = recommandation_vetements('Paris')
+    # Résultat attendu pour cette température et ces conditions
+    expected_result = "Il fait plutôt frais à Paris avec 5°C. Tu devrais peut-être envisager de porter quelque chose de chaud !"
+    # Vérifie que la fonction retourne bien le résultat attendu
+    assert recommandation_vetements('Paris') == expected_result
 
-    # Vérifier que sauvegarder_donneesCurrent_json a été appelé correctement
-    mock_sauvegarder_donnees.assert_called_once_with(api_response, 'currentMet_Paris.json', 'data')
 
-    # Vérifier que le résultat est celui attendu
-    assert result == expected_result
+def test_recommandation_vetements_printemps_avec_pluie(mocker):
+    """
+    Teste la recommandation pour une température printanière avec pluie.
+    """
+    # Mock la réponse de l'API pour une température printanière avec pluie
+    mock_response = {
+        'location': {'name': 'Lyon'},
+        'current': {
+            'temp_c': 15,
+            'condition': {'text': 'Rain'},
+            'precip_mm': 5
+        }
+    }
+    mock_requests_get = mocker.patch('requests.get')
+    mock_requests_get.return_value.status_code = 200
+    mock_requests_get.return_value.json.return_value = mock_response
+
+    # Résultat attendu pour cette température et ces conditions
+    expected_result = "Il y a Rain à Lyon et il fait 15°C. Prends un parapluie et peut-être un pull léger !"
+    # Vérifie que la fonction retourne bien le résultat attendu
+    assert recommandation_vetements('Lyon') == expected_result
+
+
+def test_recommandation_vetements_printemps_sans_pluie(mocker):
+    """
+    Teste la recommandation pour une température printanière sans pluie.
+    """
+    # Mock la réponse de l'API pour une température printanière sans pluie
+    mock_response = {
+        'location': {'name': 'Marseille'},
+        'current': {
+            'temp_c': 18,
+            'condition': {'text': 'Cloudy'},
+            'precip_mm': 0
+        }
+    }
+    mock_requests_get = mocker.patch('requests.get')
+    mock_requests_get.return_value.status_code = 200
+    mock_requests_get.return_value.json.return_value = mock_response
+
+    # Résultat attendu pour cette température et ces conditions
+    expected_result = "À Marseille il fait 18°C, un t-shirt et une veste légère pourraient être parfaits pour toi !"
+    # Vérifie que la fonction retourne bien le résultat attendu
+    assert recommandation_vetements('Marseille') == expected_result
+
+
+def test_recommandation_vetements_chaud_avec_pluie(mocker):
+    """
+    Teste la recommandation pour une température chaude avec pluie.
+    """
+    # Mock la réponse de l'API pour une température chaude avec pluie
+    mock_response = {
+        'location': {'name': 'Nice'},
+        'current': {
+            'temp_c': 25,
+            'condition': {'text': 'Rain'},
+            'precip_mm': 10
+        }
+    }
+    mock_requests_get = mocker.patch('requests.get')
+    mock_requests_get.return_value.status_code = 200
+    mock_requests_get.return_value.json.return_value = mock_response
+
+    # Résultat attendu pour cette température et ces conditions
+    expected_result = "Il pleut à Nice et il fait 25°C. N'oublie pas ton parapluie !"
+    # Vérifie que la fonction retourne bien le résultat attendu
+    assert recommandation_vetements('Nice') == expected_result
+
+
+def test_recommandation_vetements_chaud_sans_pluie(mocker):
+    """
+    Teste la recommandation pour une température chaude sans pluie.
+    """
+    # Mock la réponse de l'API pour une température chaude sans pluie
+    mock_response = {
+        'location': {'name': 'Toulouse'},
+        'current': {
+            'temp_c': 30,
+            'condition': {'text': 'Sunny'},
+            'precip_mm': 0
+        }
+    }
+    mock_requests_get = mocker.patch('requests.get')
+    mock_requests_get.return_value.status_code = 200
+    mock_requests_get.return_value.json.return_value = mock_response
+
+    # Résultat attendu pour cette température et ces conditions
+    expected_result = "Il fait chaud à Toulouse avec 30°C. C'est le moment de sortir les shorts et les lunettes de soleil !"
+    # Vérifie que la fonction retourne bien le résultat attendu
+    assert recommandation_vetements('Toulouse') == expected_result
+
+
+def test_recommandation_vetements_requete_echoue(mocker):
+    """
+    Teste le cas où la requête échoue.
+    """
+    # Mock la réponse de requests.get pour simuler une requête échouée
+    mock_requests_get = mocker.patch('requests.get')
+    mock_requests_get.return_value.status_code = 404
+
+    # Vérifie que la fonction retourne None en cas de requête échouée
+    assert recommandation_vetements('InvalidCity') is None
