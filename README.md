@@ -79,7 +79,7 @@ _(pour le lien mettez simplement l'URL de votre projets suivi de ``/tags``)_
 * **ARJOUN Imen**
 * **Bayoudh Fadwa**
 * **BOUHIDEL Salim**
-* **AYYADI NOUSSAIBA**
+* **AYADI NOUSSAIBA**
 
 ###### Lien vers la répository de projet: https://github.com/ImenHzl/ProjetFinal.git .
 
