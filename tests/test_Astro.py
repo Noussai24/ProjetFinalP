@@ -32,7 +32,7 @@ def test_get_sunrise_sunset(mock_get, sample_data):
 
     api_key = "fake_api_key"
     city = "Paris"
-    sunrise, sunset = get_sunrise_sunset(city, api_key)
+    sunrise, sunset = get_sunrise_sunset(city)
 
     assert sunrise == "05:00 AM"
     assert sunset == "07:00 PM"
@@ -44,7 +44,7 @@ def test_get_sunrise_sunset_failure(mock_get):
 
     api_key = "fake_api_key"
     city = "Paris"
-    sunrise, sunset = get_sunrise_sunset(city, api_key)
+    sunrise, sunset = get_sunrise_sunset(city)
 
     assert sunrise is None
     assert sunset is None

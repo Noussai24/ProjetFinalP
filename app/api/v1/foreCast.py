@@ -22,7 +22,7 @@ def sauvegarder_donneesforeCast_json(donnees, nom_fichier, dossier):
     print(f"Le fichier JSON a été sauvegardé à : {chemin}")
 
 
-def get_weather_forecast(city, api_key, days):
+def get_weather_forecast(city, days):
     base_url = "http://api.weatherapi.com/v1/forecast.json"
     params = {
         "key": api_key,
@@ -42,14 +42,11 @@ def get_weather_forecast(city, api_key, days):
             detail="Impossible de récupérer les données de prévision.")
         
 
-
-
-
 # Test de l'exécution directe pour la fonctionnalité CLI
 if __name__ == "__main__":
     city = 'Paris'
     days = 3
-    forecast_data = get_weather_forecast(city, api_key, days)
+    forecast_data = get_weather_forecast(city, days)
 
     for forecast in forecast_data:
         date = forecast['date']

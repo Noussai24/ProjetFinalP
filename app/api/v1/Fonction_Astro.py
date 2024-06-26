@@ -23,7 +23,7 @@ def sauvegarder_heures_soleil(data, nom_fichier):
         json.dump(data, json_file, indent=4)
 
 
-def get_sunrise_sunset(city, api_key):
+def get_sunrise_sunset(city):
     """
     Récupère l'heure du lever et du coucher du soleil pour une ville donnée.
 
@@ -59,13 +59,11 @@ def get_sunrise_sunset(city, api_key):
         return None, None
 
 
-# Clé d'API et nom de la ville pour lesquels récupérer
-# les données astronomiques
-api_key = "4c57c92aa17e4b82857172100241506"
+
 city = "Paris"
 # Appel à la fonction get_sunrise_sunset pour récupérer
 # les heures de lever et de coucher du soleil
-sunrise, sunset = get_sunrise_sunset(city, api_key)
+sunrise, sunset = get_sunrise_sunset(city)
 
 # Affichage des heures de lever et de coucher du soleil si sont dispo
 if sunrise is not None:

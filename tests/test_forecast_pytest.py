@@ -30,9 +30,8 @@ def test_sauvegarder_donneesforeCast_json():
 
 def test_get_weather_forecast():
     city = "Paris"
-    api_key = "4c57c92aa17e4b82857172100241506"
     days = 3
-    forecast_data = get_weather_forecast(city, api_key, days)
+    forecast_data = get_weather_forecast(city, days)
 
     assert isinstance(forecast_data, list)
     assert len(forecast_data) == 3

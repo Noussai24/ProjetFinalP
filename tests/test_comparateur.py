@@ -30,7 +30,7 @@ api_key = "api_key_fictive"
 cities_to_compare = ["Paris", "Londres", "Nice", "Bamako"]
 
 
-def mock_get_current_weather(city, api_key):
+def mock_get_current_weather(city):
 
     """Fonction simulée pour get_current_weather"""
     return {"current": {"temp_c": city_data[city]["temperature"],
@@ -47,7 +47,7 @@ def patch_get_current_weather():
 
 def test_compare_weather(patch_get_current_weather):
     """Tester la fonction compare_weather"""
-    weather_data = compare_weather(cities_to_compare, api_key)
+    weather_data = compare_weather(cities_to_compare)
 
     # Vérifier les résultats attendus
     assert weather_data["Paris"]["temperature"] == 22.5

@@ -1,8 +1,11 @@
 import requests
 import os
 import json
+from dotenv import load_dotenv
+import os
 
-
+load_dotenv()
+apiKey = os.getenv("api_key")
 def sauvegarder_donneesCurrentComp_json(donnees, nom_fichier, dossier):
     """
     Sauvegarde les données dans un fichier JSON.
@@ -19,7 +22,7 @@ def sauvegarder_donneesCurrentComp_json(donnees, nom_fichier, dossier):
         json.dump(donnees, json_file, indent=4)
 
 
-def get_current_weather(city, api_key):
+def get_current_weather(city):
     """
     Récupère les données météorologiques actuelles pour une ville donnée.
 
@@ -31,7 +34,7 @@ def get_current_weather(city, api_key):
         dict: Les données météorologiques actuelles pour la ville spécifiée.
     """
     # URL de l'API pour les données météorologiques actuelles
-    url = f"http://api.weatherapi.com/v1/current.json?key={api_key}&q={city}"
+    url = f"http://api.weatherapi.com/v1/current.json?key={apiKey}&q={city}"
 
     # Faire une requête GET pour obtenir les données
     response = requests.get(url)
@@ -49,7 +52,7 @@ def get_current_weather(city, api_key):
         return None
 
 
-def compare_weather(cities, api_key):
+def compare_weather(cities):
     """Compare les conditions météorologiques actuelles pour plusieurs villes.
 
     Args:
@@ -67,7 +70,7 @@ def compare_weather(cities, api_key):
     # Parcourir chaque ville dans la liste
     for city in cities:
         # Récupérer les données météorologiques actuelles pour la ville
-        data = get_current_weather(city, api_key)
+        data = get_current_weather(city)
         # Vérifier si les données sont disponibles
         if data:
             # Ajouter les données au dictionnaire de comparaison
@@ -104,13 +107,13 @@ def find_best_destination(weather_data):
 # Clé API WeatherAPI
 
 
-api_key = "61064c6295144de9b63101812242904"
+
 
 # Liste des villes à comparer
 cities_to_compare = ["Paris", "London", "nice", "bamako", "melbourn", "jeddah"]
 
 # Comparaison des conditions météorologiques
-weather_comparison = compare_weather(cities_to_compare, api_key)
+weather_comparison = compare_weather(cities_to_compare)
 
 # Affichage des résultats
 for city, data in weather_comparison.items():
