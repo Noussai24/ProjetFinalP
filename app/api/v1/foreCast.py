@@ -30,30 +30,38 @@ def get_weather_forecast(city, days):
         "days": days
     }
     response = requests.get(base_url, params=params)
-    data = response.json()
 
-    if 'forecast' in data:
-        forecast_data = data['forecast']['forecastday']
-        sauvegarder_donneesforeCast_json(data, "foreCast.json", "data")
-        return forecast_data
+    if response.status_code == 200:
+        data = response.json()
+        if 'forecast' in data:
+            forecast_data = data['forecast']['forecastday']
+            sauvegarder_donneesforeCast_json(data, "foreCast.json", "data")
+            return forecast_data
+        else:
+            raise HTTPException(
+                status_code=404,
+                detail="Impossible de récupérer les données de prévision.")
     else:
         raise HTTPException(
-            status_code=404,
-            detail="Impossible de récupérer les données de prévision.")
-        
+            status_code=response.status_code,
+            detail=f"Erreur lors de la requête à l'API : {response.status_code}"
+        )
+
 
 # Test de l'exécution directe pour la fonctionnalité CLI
 if __name__ == "__main__":
     city = 'Paris'
     days = 3
-    forecast_data = get_weather_forecast(city, days)
+    try:
+        forecast_data = get_weather_forecast(city, days)
+        for forecast in forecast_data:
+            date = forecast['date']
+            avg_temp_c = forecast['day']['avgtemp_c']
+            condition_text = forecast['day']['condition']['text']
 
-    for forecast in forecast_data:
-        date = forecast['date']
-        avg_temp_c = forecast['day']['avgtemp_c']
-        condition_text = forecast['day']['condition']['text']
-
-        print("Date:", date)
-        print("Température moyenne:", avg_temp_c, "°C")
-        print("Conditions météorologiques:", condition_text)
-        print()
+            print("Date:", date)
+            print("Température moyenne:", avg_temp_c, "°C")
+            print("Conditions météorologiques:", condition_text)
+            print()
+    except HTTPException as e:
+        print(e.detail)
