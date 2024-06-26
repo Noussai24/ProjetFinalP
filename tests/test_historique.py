@@ -1,5 +1,11 @@
-from app.api.v1.historique import Historique
+import sys
+import os
 
+
+# Ajouter le chemin du projet au sys.path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from app.api.v1.historique import Historique
 
 def test_arroseplante_jour_de_pluie():
     """
@@ -13,6 +19,9 @@ def test_arroseplante_jour_de_pluie():
     # Exécution de la fonction
     data = Historique.ArrosePlante(pays, dt, endt)
 
+    # Debugging: Print data to see what is returned
+    print(f"Data returned for test_arroseplante_jour_de_pluie: {data}")
+
     # Vérification du type de retour
     assert isinstance(data, list)
 
@@ -22,7 +31,6 @@ def test_arroseplante_jour_de_pluie():
     # Vérification des données du jour
     assert data[0]["date"] == "2024-06-15"
     assert data[0]["meteo du jour"] == "il pleut"
-
 
 def test_arroseplante_jour_sans_pluie():
     """
@@ -35,6 +43,10 @@ def test_arroseplante_jour_sans_pluie():
 
     # Exécution de la fonction
     data = Historique.ArrosePlante(pays, dt, endt)
+    print(f"Imen test:{data}")
+
+    # Debugging: Print data to see what is returned
+    print(f"Data returned for test_arroseplante_jour_sans_pluie: {data}")
 
     # Vérification du type de retour
     assert isinstance(data, list)
