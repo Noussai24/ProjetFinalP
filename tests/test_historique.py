@@ -1,12 +1,10 @@
-import requests
-import json
 from app.api.v1.historique import Historique
-import pytest
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
 apiKey = os.getenv("My_API")
+
 
 def test_arroseplante_jour_de_pluie():
     """
@@ -29,6 +27,7 @@ def test_arroseplante_jour_de_pluie():
     # Vérification des données du jour
     assert data[0]["date"] == "2024-06-15"
     assert data[0]["meteo du jour"] == "il pleut"
+
 
 def test_arroseplante_jour_sans_pluie():
     """

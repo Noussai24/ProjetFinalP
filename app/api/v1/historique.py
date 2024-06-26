@@ -12,7 +12,7 @@ class Historique:
         params:
             infoplay: les donnees json
     """
-    @staticmethod
+
     def enregistrerJson(infoplay):
         with open("data/dataLeague.json", "w") as jsonFile:
             json.dump(infoplay, jsonFile, indent=4)
@@ -28,7 +28,7 @@ class Historique:
             return:
                 jsonString: donnes en format json
     """
-    @staticmethod
+
     def ArrosePlante(apiKey, pays, dt, endt):
         urlbase = f"https://api.weatherapi.com/v1/history.json?key={apiKey}&q={pays}&dt={dt}&end_dt={endt}"
         response = requests.get(urlbase)
@@ -60,10 +60,10 @@ class Historique:
         return None
 
 
-"""# Pour tester la fonction en dehors de FastAPI
+# Pour tester la fonction en dehors de FastAPI
 apiKey = os.getenv("My_API")
 pays = "Paris"
 dt = "2024-06-15"
 endt = "2024-06-17"
 reponse = Historique.ArrosePlante(apiKey, pays, dt, endt)
-print(reponse)"""
+print(reponse)

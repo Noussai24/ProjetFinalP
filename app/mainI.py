@@ -11,8 +11,8 @@ dt = "2024-06-06"
 endt = "2024-06-08"
 app = FastAPI()
 
-@app.get("/historique")
-def read_root():
+@app.get("/historique/{pays}/{dt}/{endt}")
+def read_root(pays:str, dt:str, endt:str):
     try:
         datameteo = Historique.ArrosePlante(apiKey, pays, dt, endt)
         if datameteo is not None:
