@@ -2,6 +2,7 @@ import os
 import json
 from app.api.v1.foreCast import sauvegarder_donneesforeCast_json, get_weather_forecast
 import pytest
+from fastapi import HTTPException
 
 
 def test_sauvegarder_donneesforeCast_json():
@@ -31,7 +32,12 @@ def test_sauvegarder_donneesforeCast_json():
 def test_get_weather_forecast():
     city = "Paris"
     days = 3
-    forecast_data = get_weather_forecast(city, days)
+
+    try:
+        forecast_data = get_weather_forecast(city, days)
+    except HTTPException as e:
+        if e.status_code == 404:
+            pytest.fail(f"Les données météorologiques pour {city} n'ont pas pu être récupérées (404)")
 
     assert isinstance(forecast_data, list)
     assert len(forecast_data) == 3
