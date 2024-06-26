@@ -2,17 +2,18 @@ import requests
 import os
 from dotenv import load_dotenv
 
-# Charger les variables d'environnement depuis le fichier .env
+
 load_dotenv()
+# Charger les variables d'environnement depuis le fichier .env
 
-# Obtenir la clé API depuis les variables d'environnement
 api_key = os.getenv("api_key")
-
+# Obtenir la clé API depuis les variables d'environnement
 
 def recommandation_vetements(city):
     """
     Donne une recommandation de vêtements en fonction des conditions
     météorologiques.
+
     Args:
         city (str): Le nom de la ville pour laquelle obtenir la recommandation.
 
