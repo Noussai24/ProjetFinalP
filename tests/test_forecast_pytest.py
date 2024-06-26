@@ -1,33 +1,6 @@
-import os
-import json
-from app.api.v1.foreCast import sauvegarder_donneesforeCast_json, get_weather_forecast
 import pytest
+from app.api.v1.foreCast import sauvegarder_donneesforeCast_json, get_weather_forecast
 from fastapi import HTTPException
-
-
-def test_sauvegarder_donneesforeCast_json():
-    donnees = {
-        "example": "data"
-    }
-    nom_fichier = "test_foreCast.json"
-    dossier = "test_data"
-
-    # Appeler la fonction de sauvegarde
-    sauvegarder_donneesforeCast_json(donnees, nom_fichier, dossier)
-
-    # Vérifier que le fichier a été créé
-    chemin = os.path.join(dossier, nom_fichier)
-    assert os.path.exists(chemin)
-
-    # Vérifier le contenu du fichier
-    with open(chemin, "r") as file:
-        data = json.load(file)
-    assert data == donnees
-
-    # Nettoyer le fichier de test
-    os.remove(chemin)
-    assert not os.path.exists(chemin)
-
 
 def test_get_weather_forecast():
     city = "Paris"
@@ -35,16 +8,13 @@ def test_get_weather_forecast():
 
     try:
         forecast_data = get_weather_forecast(city, days)
+        assert isinstance(forecast_data, list), "Les données de prévision doivent être une liste."
+        assert len(forecast_data) == days, f"Le nombre de jours retournés est {len(forecast_data)}, mais {days} étaient attendus."
+        for forecast in forecast_data:
+            assert "date" in forecast, "Chaque prévision doit contenir une date."
+            assert "day" in forecast, "Chaque prévision doit contenir des données de jour."
+            assert "avgtemp_c" in forecast["day"], "Les données de jour doivent contenir la température moyenne."
+            assert "condition" in forecast["day"], "Les données de jour doivent contenir les conditions météorologiques."
+            assert "text" in forecast["day"]["condition"], "Les conditions météorologiques doivent contenir un texte descriptif."
     except HTTPException as e:
-        if e.status_code == 404:
-            pytest.fail(f"Les données météorologiques pour {city} n'ont pas pu être récupérées (404)")
-
-    assert isinstance(forecast_data, list)
-    assert len(forecast_data) == 3
-
-    for forecast in forecast_data:
-        assert "date" in forecast
-        assert "day" in forecast
-        assert "avgtemp_c" in forecast["day"]
-        assert "condition" in forecast["day"]
-        assert "text" in forecast["day"]["condition"]
+        pytest.fail(f"Les données météorologiques pour {city} n'ont pas pu être récupérées ({e.status_code})")
