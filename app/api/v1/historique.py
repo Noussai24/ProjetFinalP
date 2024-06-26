@@ -7,17 +7,20 @@ import json
 class Historique:
     load_dotenv()
     apiKey = os.getenv("My_API")
-    """cette fonction permet de créer un fichier json et
+
+
+    def enregistrerJson(infoplay):
+        """cette fonction permet de créer un fichier json et
         les enregistrer dans un fichier json
         params:
             infoplay: les donnees json
     """
-
-    def enregistrerJson(infoplay):
         with open("data/dataLeague.json", "w") as jsonFile:
             json.dump(infoplay, jsonFile, indent=4)
 
-    """
+
+    def ArrosePlante(pays, dt, endt):
+        """
         cette fonction permet de récuperer la prévision
                     metrologique a partir d'une date
             params:
@@ -28,8 +31,6 @@ class Historique:
             return:
                 jsonString: donnes en format json
     """
-
-    def ArrosePlante(apiKey, pays, dt, endt):
         urlbase = f"https://api.weatherapi.com/v1/history.json?key={apiKey}&q={pays}&dt={dt}&end_dt={endt}"
         response = requests.get(urlbase)
         try:
@@ -48,7 +49,7 @@ class Historique:
                     else:
                         meteo = "il pleut"
                         dates.append({"date": date, "meteo du jour": meteo})
-                        # Enregistrer les données au format JSON
+                # Enregistrer les données au format JSON
                 Historique.enregistrerJson(dates)
                 return dates
             else:
@@ -65,5 +66,5 @@ apiKey = os.getenv("My_API")
 pays = "Paris"
 dt = "2024-06-15"
 endt = "2024-06-17"
-reponse = Historique.ArrosePlante(apiKey, pays, dt, endt)
+reponse = Historique.ArrosePlante(pays, dt, endt)
 print(reponse)

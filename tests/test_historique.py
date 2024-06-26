@@ -1,9 +1,4 @@
 from app.api.v1.historique import Historique
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
-apiKey = os.getenv("My_API")
 
 
 def test_arroseplante_jour_de_pluie():
@@ -16,7 +11,7 @@ def test_arroseplante_jour_de_pluie():
     endt = "2024-06-15"
 
     # Exécution de la fonction
-    data = Historique.ArrosePlante(apiKey, pays, dt, endt)
+    data = Historique.ArrosePlante(pays, dt, endt)
 
     # Vérification du type de retour
     assert isinstance(data, list)
@@ -39,7 +34,7 @@ def test_arroseplante_jour_sans_pluie():
     endt = "2024-06-16"
 
     # Exécution de la fonction
-    data = Historique.ArrosePlante(apiKey, pays, dt, endt)
+    data = Historique.ArrosePlante(pays, dt, endt)
 
     # Vérification du type de retour
     assert isinstance(data, list)
@@ -50,4 +45,3 @@ def test_arroseplante_jour_sans_pluie():
     # Vérification des données du jour
     assert data[0]["date"] == "2024-06-16"
     assert data[0]["meteo du jour"] == "il pleut"
-
