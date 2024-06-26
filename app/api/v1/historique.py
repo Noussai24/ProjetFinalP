@@ -6,7 +6,7 @@ import json
 
 class Historique:
     load_dotenv()
-    apiKey = os.getenv("My_API")
+    apiKey = os.getenv("api_key")
 
 
     def enregistrerJson(infoplay):
@@ -15,7 +15,7 @@ class Historique:
         params:
             infoplay: les donnees json
     """
-        with open("data/dataLeague.json", "w") as jsonFile:
+        with open("data/dataHistorique.json", "w") as jsonFile:
             json.dump(infoplay, jsonFile, indent=4)
 
 

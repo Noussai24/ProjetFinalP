@@ -40,12 +40,10 @@ def get_weather_forecast(city, api_key, days):
         raise HTTPException(
             status_code=404,
             detail="Impossible de récupérer les données de prévision.")
+        
 
 
-@router.get("/forecast")
-async def get_forecast(city: str, days: int = 3):
-    forecast_data = get_weather_forecast(city, api_key, days)
-    return forecast_data
+
 
 # Test de l'exécution directe pour la fonctionnalité CLI
 if __name__ == "__main__":
