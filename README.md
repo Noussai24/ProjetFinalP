@@ -53,3 +53,6 @@ Installation : pip install python-dotenv
 =======pip install requests fastapi python-dotenv
 2. Exécution du script foreCast avec Python
 python foreCast.py
+
+locust pour test de charge et nous avons assimiler 10 utilisateur
+C:\Users\nouss\POEC\ProjetFinal\tests> locust -f locustfile.py --host=http://127.0.0.1:8000
