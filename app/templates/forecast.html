@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather Forecast</title>
+</head>
+<body>
+    <h1>Weather Forecast</h1>
+    <form action="/forecast" method="post">
+        <label for="city">Enter city:</label>
+        <input type="text" id="city" name="city">
+        <button type="submit">Get Forecast</button>
+    </form>
+    {% if forecast_data %}
+        <h2>Forecast for {{ request.form.city }}:</h2>
+        <ul>
+            {% for day in forecast_data %}
+                <li>{{ day.date }}: {{ day.day.avgtemp_c }}°C, {{ day.day.condition.text }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
