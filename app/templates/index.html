@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interface avec boutons radio</title>
+</head>
+<body>
+    <h1>Choisissez une option</h1>
+    
+    <!-- Boutons radio -->
+    <label>
+        <input type="radio" name="option" value="Option 1"> Option 1
+    </label><br>cd ..
+    <label>
+        <input type="radio" name="option" value="Option 2"> Option 2
+    </label><br>
+    <label>
+        <input type="radio" name="option" value="Option 3"> Option 3
+    </label><br>
+    
+    <!-- Bouton de soumission -->
+    <button onclick="getSelectedOption()">Soumettre</button>
+    
+    <!-- Zone pour afficher la sélection -->
+    <p id="resultat"></p>
+    
+    <script>
+        // Fonction pour récupérer la valeur sélectionnée
+        function getSelectedOption() {
+            const radios = document.getElementsByName('option');
+            let selectedValue;
+            for (const radio of radios) {
+                if (radio.checked) {
+                    selectedValue = radio.value;
+                    break;
+                }
+            }
+            // Afficher la valeur sélectionnée
+            document.getElementById('resultat').innerText = `Vous avez choisi : ${selectedValue}`;
+        }
+    </script>
+</body>
+</html>
