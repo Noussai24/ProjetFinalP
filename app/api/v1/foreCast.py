@@ -3,12 +3,15 @@ import json
 import os
 from fastapi import APIRouter, HTTPException
 from dotenv import load_dotenv
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 load_dotenv()
 
 router = APIRouter()
 
-api_key = os.getenv('API_KEY', '70cb525479934787a59201748242606')
+api_key = os.getenv('API_KEY')
+
 
 
 
@@ -46,3 +49,4 @@ def get_weather_forecast(city, days=3):
             status_code=response.status_code,
             detail=f"Erreur lors de la requête à l'API : {response.status_code}"
         )
+   
