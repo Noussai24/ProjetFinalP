@@ -7,7 +7,7 @@ load_dotenv()
 
 app = FastAPI()
 
-api_key = os.getenv('API_KEY', '70cb525479934787a59201748242606')
+api_key = os.getenv('API_KEY')
 
 @app.get("/")
 def read_root():
