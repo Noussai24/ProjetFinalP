@@ -1,20 +1,36 @@
-from fastapi import FastAPI, Request, Form
-from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
-from app.api.v1.foreCast import get_weather_forecast
+import requests
+from fastapi import FastAPI, HTTPException
+from dotenv import load_dotenv
+from app.api.v1.foreCast import get_weather_forecast  # Import relatif correct
 import os
+load_dotenv()
+
 app = FastAPI()
-templates = Jinja2Templates(directory="app/templates")
+
+api_key = os.getenv('API_KEY', '70cb525479934787a59201748242606')
+
+@app.get("/")
+def read_root():
+    return {"message": "Bienvenue sur l'API de prévisions météorologiques"}
 
 
-@app.get("/", response_class=HTMLResponse)
-async def read_form(request: Request):
-    return templates.TemplateResponse("forecast.html", {"request": request})
 
-
-@app.post("/forecast", response_class=HTMLResponse)
-async def get_forecast(request: Request, city: str = Form(...)):
-    forecast_data = get_weather_forecast(city, os.getenv('api_key'), 3)
-    return templates.TemplateResponse(
-        "forecast.html", {
-            "request": request, "forecast_data": forecast_data})
+@app.get("/forecast/{city}")
+def fetch_forecast(city: str):
+    try:
+        forecast_data = get_weather_forecast(city, 3)
+        processed_data = [
+            {
+                "Date": forecast['date'],
+                "Température moyenne": forecast['day']['avgtemp_c'],
+                "Conditions météorologiques": forecast['day']['condition']['text'],
+            } for forecast in forecast_data
+        ]
+        return {
+            "Ville": city,
+            "Prévisions": processed_data
+        }
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
