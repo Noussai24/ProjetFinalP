@@ -14,7 +14,7 @@ Cette api web météorologique, développée avec FastAPI, offre des premieres f
 - **API Météorologique :** WeatherAPI
 - **Gestion de Versions :** Git, GitHub
 - **Intégration Continue :** CircleCI
-- **Tests :** pytest (tests unitaires), Postman (tests API), flake8 (qualité du code)
+- **Tests :** pytest (tests unitaires), Postman (tests API), flake8 (qualité du code), test de perf locust
 - **Normes de Code :** PEP 8
 
 ## Installation
